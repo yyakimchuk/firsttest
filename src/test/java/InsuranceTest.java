@@ -1,7 +1,4 @@
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,24 +9,12 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.concurrent.TimeUnit;
 
-public class InsuranceTest {
-    WebDriver driver;
-    String baseUrl;
-
-    @Before
-    public void testBefore() {
-        System.setProperty("webdriver.chrome.driver", "drv/chromedriver.exe");
-//        System.setProperty("webdriver.gecko.driver", "drv/geckodriver.exe");
-        // Перейти на страницу http://www.sberbank.ru/ru/person
-        baseUrl = "https://www.sberbank.ru/ru/person";
-        driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-        driver.manage().window().maximize();
-        driver.get(baseUrl);
-    }
+public class InsuranceTest extends BaseTest{
 
     @Test
+    @Ignore
     public void testInsurance() {
+        driver.get(baseUrl);
         //закрываем всплывающее сообщение
         driver.findElement(By.xpath("//button[text()='Закрыть']")).click();
         //Нажать на – Страхование
@@ -54,7 +39,7 @@ public class InsuranceTest {
         WebElement titlePolicy = driver.findElement(By.xpath("//h2[contains(text(),'Страхование путешественников')]"));
         wait.until(ExpectedConditions.visibilityOf(titlePolicy));
         driver.manage().timeouts().pageLoadTimeout(60,TimeUnit.SECONDS);
-        driver.findElement(By.xpath("//h3[contains(text(),'Минимальная')]")).click();
+            driver.findElement(By.xpath("//h3[contains(text(),'Минимальная')]")).click();
 
         //Нажать Оформить (Необходимо сначала навести фокус на кнопку, проверить что она видна, потом нажать)
         Actions builder = new Actions(driver);
@@ -133,15 +118,5 @@ public class InsuranceTest {
                 driver.findElement(By.xpath("//input-email[@name='email']//validation-message/span")).getText());
         Assert.assertEquals("Поле не заполнено.",
                 driver.findElement(By.xpath("//input-email[@name='repeatEmail']//validation-message/span")).getText());
-    }
-
-    public void fillFiled(By locator, String value) {
-        driver.findElement(locator).clear();
-        driver.findElement(locator).sendKeys(value);
-    }
-
-    @After
-    public void testAfter() {
-        driver.quit();
     }
 }
