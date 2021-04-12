@@ -1,5 +1,6 @@
 package pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -8,7 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class RegistrationPage extends BasePage{
+public class RegistrationPage extends BasePage {
 
     @FindBy(xpath = "//div[contains(@class,'active')]//a[text()='Оформление']")
     WebElement titleOrdering;
@@ -55,14 +56,14 @@ public class RegistrationPage extends BasePage{
     @FindBy(xpath = "//div[contains(@class,'alert-form')]")
     public WebElement errorMsg;
 
-    public RegistrationPage(WebDriver driver){
+    public RegistrationPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
-        Wait<WebDriver> wait = new WebDriverWait(driver,5,1000);
+        Wait<WebDriver> wait = new WebDriverWait(driver, 5, 1000);
         wait.until(ExpectedConditions.visibilityOf(titleOrdering));
     }
 
-    public void fillField(String fieldName, String value){
-        switch (fieldName){
+    public void fillField(String fieldName, String value) {
+        switch (fieldName) {
             case "Фамилия застрахованного":
                 fillField(surnameInsured, value);
                 break;
@@ -97,13 +98,13 @@ public class RegistrationPage extends BasePage{
                 fillField(issuedBy, value);
                 break;
             default:
-                throw new AssertionError("Поле '"+fieldName+"' не объявлено на странице");
+                throw new AssertionError("Поле '" + fieldName + "' не объявлено на странице");
         }
     }
 
 
-    public String getFillField(String fieldName){
-        switch (fieldName){
+    public String getFillField(String fieldName) {
+        switch (fieldName) {
             case "Фамилия застрахованного":
                 return surnameInsured.getAttribute("value");
             case "Имя застрахованного":
@@ -131,4 +132,10 @@ public class RegistrationPage extends BasePage{
         throw new AssertionError("Поле не объявлено на странице");
     }
 
+    public void checkFieldErrorMessage(String field, String errorMessage) {
+        String xpath = "//span[contains(text(),'" + field + "')]/..//input[contains(@class,'form-control ng-untouched ng-pristine ng-invalid')]/../validation-message/span";
+        String actualValue = driver.findElement(By.xpath(xpath)).getText();
+        org.junit.Assert.assertTrue(String.format("Получено значение [%s]. Ожидалось [%s]", actualValue, errorMessage),
+                actualValue.contains(errorMessage));
+    }
 }

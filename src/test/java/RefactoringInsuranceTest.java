@@ -61,8 +61,8 @@ public class RefactoringInsuranceTest extends BaseTest {
         waitElementToBeVisible(registrationPage.errorMsg);
         checkFieldText("При заполнении данных произошла ошибка", registrationPage.errorMsg);
 
-        checkFieldErrorMessage("Мобильный телефон","Поле не заполнено.");
-        checkFieldErrorMessage("Электронная почта","Поле не заполнено.");
-        checkFieldErrorMessage("Повтор электронной почты","Поле не заполнено.");
+        registrationPage.checkFieldErrorMessage("Мобильный телефон","Поле не заполнено.");
+        registrationPage.checkFieldErrorMessage("Электронная почта","Поле не заполнено.");
+        registrationPage.checkFieldErrorMessage("Повтор электронной почты","Поле не заполнено.");
     }
 }

@@ -79,11 +79,4 @@ public class BaseTest {
         Assert.assertEquals(value, element.getText());
     }
 
-    public void checkFieldErrorMessage(String field, String errorMessage){
-        String xpath = "//span[contains(text(),'"+field+"')]/..//input[contains(@class,'form-control ng-untouched ng-pristine ng-invalid')]/../validation-message/span";
-        String actualValue = driver.findElement(By.xpath(xpath)).getText();
-        org.junit.Assert.assertTrue(String.format("Получено значение [%s]. Ожидалось [%s]", actualValue, errorMessage),
-                actualValue.contains(errorMessage));
-    }
-
 }
