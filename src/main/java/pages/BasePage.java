@@ -12,4 +12,8 @@ public class BasePage {
         element.clear();
         element.sendKeys(value);
     }
+
+    public void checkFillField(String value, WebElement element) {
+        assertEquals(value, element.getAttribute("value"));
+    }
 }

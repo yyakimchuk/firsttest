@@ -1,3 +1,5 @@
+package steps;
+
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -10,17 +12,22 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import util.TestProperties;
 
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 
-public class BaseTest {
+public class BaseSteps {
 
     protected static WebDriver driver;
     protected static String baseUrl;
     public static Properties properties = TestProperties.getInstance().getProperties();
+
+    public static WebDriver getDriver() {
+        return driver;
+    }
 
     @BeforeClass
     public static void setUp() throws Exception{
@@ -71,7 +78,7 @@ public class BaseTest {
         wait.until(ExpectedConditions.visibilityOf(element));
     }
 
-    protected void checkFillField(String value, WebElement element) {
+    public void checkFillField(String value, WebElement element) {
         assertEquals(value, element.getAttribute("value"));
     }
 
@@ -79,4 +86,10 @@ public class BaseTest {
         Assert.assertEquals(value, element.getText());
     }
 
+    public void checkFieldErrorMessage(String field, String errorMessage) {
+        String xpath = "//span[contains(text(),'" + field + "')]/..//input[contains(@class,'form-control ng-untouched ng-pristine ng-invalid')]/../validation-message/span";
+        String actualValue = driver.findElement(By.xpath(xpath)).getText();
+        org.junit.Assert.assertTrue(String.format("Получено значение [%s]. Ожидалось [%s]", actualValue, errorMessage),
+                actualValue.contains(errorMessage));
+    }
 }

@@ -103,39 +103,44 @@ public class RegistrationPage extends BasePage {
     }
 
 
-    public String getFillField(String fieldName) {
+    public void getFillField(String fieldName, String value) {
         switch (fieldName) {
             case "Фамилия застрахованного":
-                return surnameInsured.getAttribute("value");
+                checkFillField(value, surnameInsured);
+                break;
             case "Имя застрахованного":
-                return nameInsured.getAttribute("value");
+                checkFillField(value, nameInsured);
+                break;
             case "Дата рождения застрахованного":
-                return dateOfBirthInsured.getAttribute("value");
+                checkFillField(value, dateOfBirthInsured);
+                break;
             case "Фамилия страхователя":
-                return lastNameInsurant.getAttribute("value");
+                checkFillField(value, lastNameInsurant);
+                break;
             case "Имя страхователя":
-                return firstNameInsurant.getAttribute("value");
+                checkFillField(value, firstNameInsurant);
+                break;
             case "Отчество страхователя":
-                return middleNameInsurant.getAttribute("value");
+                checkFillField(value, middleNameInsurant);
+                break;
             case "Дата рождения страхователя":
-                return dateOfBirthInsurant.getAttribute("value");
+                checkFillField(value, dateOfBirthInsurant);
+                break;
             case "Серия":
-                return passportSeries.getAttribute("value");
+                checkFillField(value, passportSeries);
+                break;
             case "Номер":
-                return passportNumber.getAttribute("value");
+                checkFillField(value, passportNumber);
+                break;
             case "Дата выдачи":
-                return documentDate.getAttribute("value");
+                checkFillField(value, documentDate);
+                break;
             case "Кем выдан":
-                return issuedBy.getAttribute("value");
+                checkFillField(value, issuedBy);
+                break;
+            default:
+                throw new AssertionError("Поле '" + fieldName + "' не объявлено на странице");
         }
-
-        throw new AssertionError("Поле не объявлено на странице");
-    }
-
-    public void checkFieldErrorMessage(String field, String errorMessage) {
-        String xpath = "//span[contains(text(),'" + field + "')]/..//input[contains(@class,'form-control ng-untouched ng-pristine ng-invalid')]/../validation-message/span";
-        String actualValue = driver.findElement(By.xpath(xpath)).getText();
-        org.junit.Assert.assertTrue(String.format("Получено значение [%s]. Ожидалось [%s]", actualValue, errorMessage),
-                actualValue.contains(errorMessage));
     }
 }
+

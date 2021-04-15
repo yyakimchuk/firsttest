@@ -1,11 +1,14 @@
+import org.junit.Ignore;
 import org.junit.Test;
 import pages.*;
+import steps.BaseSteps;
 
 import static org.junit.Assert.assertTrue;
 
-public class RefactoringInsuranceTest extends BaseTest {
+public class RefactoringInsuranceTest extends BaseSteps {
 
     @Test
+    @Ignore
     public void RefactoringInsuranceTest() {
         MainPage mainPage = new MainPage(driver);
         mainPage.closeBtn.click();
@@ -61,8 +64,8 @@ public class RefactoringInsuranceTest extends BaseTest {
         waitElementToBeVisible(registrationPage.errorMsg);
         checkFieldText("При заполнении данных произошла ошибка", registrationPage.errorMsg);
 
-        registrationPage.checkFieldErrorMessage("Мобильный телефон","Поле не заполнено.");
-        registrationPage.checkFieldErrorMessage("Электронная почта","Поле не заполнено.");
-        registrationPage.checkFieldErrorMessage("Повтор электронной почты","Поле не заполнено.");
+        checkFieldErrorMessage("Мобильный телефон","Поле не заполнено.");
+        checkFieldErrorMessage("Электронная почта","Поле не заполнено.");
+        checkFieldErrorMessage("Повтор электронной почты","Поле не заполнено.");
     }
 }
