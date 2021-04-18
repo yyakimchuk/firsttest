@@ -1,8 +1,9 @@
 package steps;
 
-import org.junit.AfterClass;
+
+import cucumber.api.java.After;
+import cucumber.api.java.Before;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -29,7 +30,7 @@ public class BaseSteps {
         return driver;
     }
 
-    @BeforeClass
+    @Before
     public static void setUp() throws Exception{
 
         switch (properties.getProperty("browser")){
@@ -53,7 +54,7 @@ public class BaseSteps {
         driver.get(baseUrl);
     }
 
-    @AfterClass
+    @After
     public static void tearDown() throws Exception{
         driver.quit();
     }

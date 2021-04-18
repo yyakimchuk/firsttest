@@ -1,14 +1,15 @@
 package steps;
 
+import org.openqa.selenium.WebDriver;
 import pages.CatalogPage;
-import pages.MainPage;
 import ru.yandex.qatools.allure.annotations.Step;
 
-public class CatalogSteps extends BaseSteps {
+public class CatalogSteps {
 
     @Step("Выбрано Страхование для путешественников")
     public void stepTravelInsuranceLinkClick(){
-        new CatalogPage(driver).travelInsuranceLink.click();
+        CatalogPage catalogPage = new CatalogPage();
+        new CatalogPage().travelInsuranceLink.click();
     }
 
 }

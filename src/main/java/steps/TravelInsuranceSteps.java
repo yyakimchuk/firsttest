@@ -5,11 +5,11 @@ import ru.yandex.qatools.allure.annotations.Step;
 
 import static org.junit.Assert.assertTrue;
 
-public class TravelInsuranceSteps extends BaseSteps {
+public class TravelInsuranceSteps {
 
     @Step("Получаем текст заголовка")
     public String stepGetTitleText(){
-       String titleText = new TravelInsurancePage(driver).title.getText();
+       String titleText = new TravelInsurancePage().title.getText();
        return titleText;
     }
 
@@ -20,6 +20,6 @@ public class TravelInsuranceSteps extends BaseSteps {
 
     @Step("Нажимаем кнопку Оформить онлайн")
     public void stepArrangeOnlineBtnClick(){
-        new TravelInsurancePage(driver).arrangeOnlineBtn.click();
+        new TravelInsurancePage().arrangeOnlineBtn.click();
     }
 }
