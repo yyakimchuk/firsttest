@@ -1,114 +1,123 @@
 package steps;
 
-import cucumber.api.DataTable;
-import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import pages.RegistrationPage;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.Set;
 
 public class ScenarioSteps {
 
+    BaseSteps baseSteps = new BaseSteps();
     MainSteps mainSteps = new MainSteps();
-    CatalogSteps catalogSteps = new CatalogSteps();
-    TravelInsuranceSteps travelInsuranceSteps = new TravelInsuranceSteps();
-    ChoosingPolicySteps choosingPolicySteps = new ChoosingPolicySteps();
-    RegistrationSteps registrationSteps = new RegistrationSteps();
+    MarketPageSteps marketPageSteps = new MarketPageSteps();
+    ElectronicsPageSteps electronicsPageSteps = new ElectronicsPageSteps();
+    SelectedCategoryPageSteps selectedCategoryPageSteps = new SelectedCategoryPageSteps();
+    AllFiltersPageSteps allFiltersPageSteps = new AllFiltersPageSteps();
 
 
-    @When("^нажимается кнопка Закрыть на всплывающем сообщении$")
-    public void stepCloseBtnClick(){
-        mainSteps.stepCloseBtnClick();
+    @When("^выбирается пункт меню Маркет$")
+    public void stepSelectMarketMenu() {
+        final Set<String> oldWindowsSet = BaseSteps.getDriver().getWindowHandles();
+        mainSteps.stepSelectMarketMenu();
+        String newWindow = (new WebDriverWait(BaseSteps.getDriver(), 10))
+                .until(new ExpectedCondition<String>() {
+                           public String apply(WebDriver driver) {
+                               Set<String> newWindowsSet = driver.getWindowHandles();
+                               newWindowsSet.removeAll(oldWindowsSet);
+                               return newWindowsSet.size() > 0 ?
+                                       newWindowsSet.iterator().next() : null;
+                           }
+                       }
+                );
+
+        BaseSteps.getDriver().switchTo().window(newWindow);
+
     }
 
     @When("^выбирается пункт меню \"(.*)\"$")
-    public void stepSelectMainMenu(String menuItem){
-        mainSteps.stepSelectMainMenu(menuItem);
+    public void stepSelectMainMenu(String menuItem) {
+        marketPageSteps.stepSelectMarketMainMenu(menuItem);
     }
 
-    @When("^выбирается продукт \"(.*)\" в списке$")
-    public void stepSelectSubMenu(String menuItem){
-        mainSteps.stepSelectSubMenu(menuItem);
+    @When("^выбирается категория \"(.*)\"$")
+    public void stepSelectMarketCategoryMenu(String menuItem) {
+        electronicsPageSteps.stepSelectMarketCategoryMenu(menuItem);
     }
 
-    @When("^выбирается продукт страхования - Страхование для путешественников$")
-    public void stepTravelInsuranceLinkClick(){
-        catalogSteps.stepTravelInsuranceLinkClick();
+    @When("^нажимается кнопка - Все фильтры$")
+    public void stepTVSetPageClick() {
+        selectedCategoryPageSteps.stepTVSetPageClick();
     }
 
-    @When("^заголовок страницы равен \"(.*)\"$")
-    public void stepAssertTitle(String value) {
-        travelInsuranceSteps.stepAssertTitle(travelInsuranceSteps.stepGetTitleText(), value);
+    @When("^поле Цена, от - заполняется значением \"(.*)\"$")
+    public void stepSetPriceFromInput(String price) {
+        allFiltersPageSteps.stepSetPriceFromInput(price);
     }
 
-    @When("^нажимается кнопка Оформить онлайн$")
-    public void stepArrangeOnlineBtnClick(){
-        travelInsuranceSteps.stepArrangeOnlineBtnClick();
+    @When("^выбирается производитель \"(.*)\"$")
+    public void stepSelectProducer(String producer) {
+        allFiltersPageSteps.stepSelectProducer(producer);
     }
 
-    @When("^выбирается сумма страховой защиты - Минимальная$")
-    public void stepProtectionSumMinClick(){
-        choosingPolicySteps.stepProtectionSumMinClick();
+    @When("^нажимается кнопка - Применить фильтры$")
+    public void stepApplyFilterBtnClick() {
+        allFiltersPageSteps.stepApplyFilterBtnClick();
     }
 
-    @When("^ожидание, что кнопка Оформить станет кликабельна$")
-    public void stepWaitOrderBtnToBeClickable(){
-        choosingPolicySteps.stepWaitOrderBtnToBeClickable();
+    @When("^наводится курсор на производителя$")
+    public void stepMoveToProducer(){
+        allFiltersPageSteps.stepMoveToProducer();
     }
 
-    @When("^наводится курсор на кнопку Оформить$")
-    public void stepMoveToOrderBtn(){
-        choosingPolicySteps.stepMoveToOrderBtn();
+    @When("^сохраняется в переменную \"(.*)\" наименование продукта под номером \"(.*)\"$")
+    public void stepSelectNameElementSearch(String name, String number){
+        selectedCategoryPageSteps.stepSelectNameElementSearch(name, number);
     }
 
-    @When("^нажимается кнопка - Оформить$")
-    public void stepOrderBtnClick(){
-        choosingPolicySteps.stepOrderBtnClick();
+    @When("^заполняется поле Поиск значением переменной \"(.*)\"$")
+    public void stepSetNameElementInSearchField(String name){
+        selectedCategoryPageSteps.stepSetNameElementInSearchField(name);
     }
 
-    @When("^заполняются поля:$")
-    public void fillForm(DataTable fields){
-        fields.asMap(String.class, String.class)
-                .forEach((field, value) -> registrationSteps.stepFillField(field, value));
-
+    @When("^ожидание результата поиска$")
+    public void stepWaitSearchResult(){
+        selectedCategoryPageSteps.stepWaitSearchResult();
     }
 
-    @When("^выбирается поле Фамилия страхователя$")
-    public void stepLastNameInsurantClick(){
-        registrationSteps.stepLastNameInsurantClick();
+    @When("^выбирается поле Поиск$")
+    public void stepSearchFieldClick(){
+        selectedCategoryPageSteps.stepSearchFieldClick();
     }
 
-    @When("^выбирается поле Серия паспорта$")
-    public void stepPassportSeriesClick(){
-        registrationSteps.stepPassportSeriesClick();
+    @When("^нажимается кнопка Найти$")
+    public void stepSearchBtnClick(){
+        selectedCategoryPageSteps.stepSearchBtnClick();
     }
 
-    @When("^выбирается пол - Женский$")
-    public void stepFemaleBtnClick(){
-        registrationSteps.stepFemaleBtnClick();
+    @When("^ожидание (\\d+) секунд$")
+    public void stepWaitElement(Integer sec){
+        baseSteps.waitElement(sec);
     }
 
-    @Then("^значения полей равны:$")
-    public void checkFillForm(DataTable fields){
-        fields.asMap(String.class, String.class)
-                .forEach((field, value) -> registrationSteps.stepGetFillField(field, value));
+    @When("^сравнить значение переменной \"(.*)\" с \"(.*)\"$")
+    public void stepcheckValues(String val1, String val2){
+        baseSteps.checkValues(val1, val2);
     }
 
-    @When("^нажимается кнопка - Продолжить$")
-    public void stepNextStepBtnClick(){
-        registrationSteps.stepNextStepBtnClick();
+    @When("^прокрутить страницу вниз до поля поиска производителя$")
+    public void stepScrollPageToProducerViewAll(){
+        allFiltersPageSteps.stepScrollPageToProducerViewAll();
     }
 
-    @When("^ожидание отображения сообщения об ошибке$")
-    public void stepWaitErroMsgToBeVisible(){
-        registrationSteps.stepWaitErroMsgToBeVisible();
+    @When("^поле Поиск в секции Производитель заполняется значением \"(.*)\"$")
+    public void stepSetInputProducer(String value){
+        allFiltersPageSteps.stepSetInputProducer(value);
     }
 
-    @When("^текст ошибки равен \"(.*)\"$")
-    public void stepCheckFieldText(String value){
-        registrationSteps.stepCheckFieldText(value, (new RegistrationPage().errorMsg));
-    }
-
-    @When("^текст сообщения об ошибке для поля \"(.*)\" равен \"(.*)\"$")
-    public void stepCheckFieldText(String field, String errorMsg){
-        new BaseSteps().checkFieldErrorMessage(field, errorMsg);
+    @When("^ожидается появление на странице Производителя \"(.*)\"$")
+    public void stepWaitProducerVisible(String producer){
+        allFiltersPageSteps.stepWaitProducerVisible(producer);
     }
 }

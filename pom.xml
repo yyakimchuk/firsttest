@@ -27,12 +27,6 @@
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
-<!--                    <properties>-->
-<!--                        <property>-->
-<!--                            <name>listener</name>-->
-<!--                            <value>util.AllureReporter</value>-->
-<!--                        </property>-->
-<!--                    </properties>-->
                 </configuration>
             </plugin>
             <plugin>
@@ -86,12 +80,6 @@
             <artifactId>allure-maven-plugin</artifactId>
             <version>2.5</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>ru.yandex.qatools.allure</groupId>-->
-<!--            <artifactId>allure-junit-adaptor</artifactId>-->
-<!--            <version>1.5.4</version>-->
-<!--        </dependency>-->
-
     </dependencies>
 
 </project>

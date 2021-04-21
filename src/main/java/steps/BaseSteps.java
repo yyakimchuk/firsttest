@@ -15,6 +15,8 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import util.TestProperties;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -29,11 +31,13 @@ public class BaseSteps {
     public static WebDriver getDriver() {
         return driver;
     }
+    public static String ProdName;
+    public static final Map<Object, Object> STASH = new HashMap();
 
     @Before
-    public static void setUp() throws Exception{
+    public static void setUp() throws Exception {
 
-        switch (properties.getProperty("browser")){
+        switch (properties.getProperty("browser")) {
             case "firefox":
                 System.setProperty("webdriver.geco.driver", properties.getProperty("webdriver.geco.driver"));
                 driver = new FirefoxDriver();
@@ -55,7 +59,7 @@ public class BaseSteps {
     }
 
     @After
-    public static void tearDown() throws Exception{
+    public static void tearDown() throws Exception {
         driver.quit();
     }
 
@@ -64,26 +68,36 @@ public class BaseSteps {
         driver.findElement(locator).sendKeys(value);
     }
 
-    public void moveElement(WebElement element){
+    public void moveElement(WebElement element) {
         Actions builder = new Actions(driver);
         builder.moveToElement(element).build().perform();
     }
 
-    public void waitElementToBeClickable(WebElement element){
-        WebDriverWait waitDriver = new WebDriverWait(driver,1000);
+    public void waitElementToBeClickable(WebElement element) {
+        WebDriverWait waitDriver = new WebDriverWait(driver, 1000);
         waitDriver.until(ExpectedConditions.elementToBeClickable(element));
     }
 
-    public void waitElementToBeVisible(WebElement element){
-        Wait<WebDriver> wait = new WebDriverWait(driver,5,1000);
+    public void waitElementToBeVisible(WebElement element) {
+        Wait<WebDriver> wait = new WebDriverWait(driver, 5, 1000);
         wait.until(ExpectedConditions.visibilityOf(element));
+    }
+
+    public void waitElement(Integer sec) {
+        try {
+            Thread.sleep(sec*1000);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
+//        Wait<WebDriver> wait = new WebDriverWait(driver, 5, 1000);
+//        driver.manage().timeouts().implicitlyWait(second, TimeUnit.SECONDS);
     }
 
     public void checkFillField(String value, WebElement element) {
         assertEquals(value, element.getAttribute("value"));
     }
 
-    public void checkFieldText(String value, WebElement element){
+    public void checkFieldText(String value, WebElement element) {
         Assert.assertEquals(value, element.getText());
     }
 
@@ -93,4 +107,10 @@ public class BaseSteps {
         org.junit.Assert.assertTrue(String.format("Получено значение [%s]. Ожидалось [%s]", actualValue, errorMessage),
                 actualValue.contains(errorMessage));
     }
+
+    public void checkValues (String val1, String val2){
+        org.junit.Assert.assertEquals("Значение [%s] не равно [%s]", new BaseSteps().STASH.get(val1), new BaseSteps().STASH.get(val2));
+    }
+
 }
+
