@@ -7,7 +7,7 @@ public class SelectedCategoryPageSteps {
 
     @Step("Нажимается кнопка - Все фильтры")
     public void stepTVSetPageClick(){
-        new SelectedCategoryPage().tVSetPageClick();
+        new SelectedCategoryPage().allFiltersBtnClick();
     }
 
     @Step("Запоминается наименование товара под номером {0} из списка")

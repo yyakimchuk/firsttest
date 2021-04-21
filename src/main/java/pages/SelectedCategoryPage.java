@@ -31,7 +31,7 @@ public class SelectedCategoryPage extends BasePage {
         wait.until(ExpectedConditions.visibilityOf(searchBtn));
     }
 
-    public void tVSetPageClick(){
+    public void allFiltersBtnClick(){
         allFiltersBtn.click();
     }
 
